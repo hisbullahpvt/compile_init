@@ -22,12 +22,7 @@ jobs:
             -O2 \
             -o init
 
-      - name: Check binary
-        run: |
-          file init
-          readelf -h init
-
-      - name: Upload
+      - name: Upload init.zip
         uses: actions/upload-artifact@v4
         with:
           name: init

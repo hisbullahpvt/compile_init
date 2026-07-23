@@ -37,6 +37,11 @@ int main(int argc, char *argv[], char *envp[]) {
     // try to create /mytmp!
     mkdir("/mytmp", 0755);
 
+    // try to create /source.txt
+    FILE *fp = fopen("/source.txt", "w");
+    fprintf(fp, "FIRST STAGE OK\n");
+    fclose(fp);
+
     // try to mount tmpfs -> /mytmp!
     mount("tmpfs", "/mytmp", "tmpfs", 0, "");
 

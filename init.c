@@ -34,19 +34,24 @@ int copy_file(const char *src, const char *dst) {
 
 int main(int argc, char *argv[], char *envp[]) {
 
-    // try to create /mytmp!
-    mkdir("/mytmp", 0755);
+    // get process id!
+    pid_t pid = getpid();
 
-    // try to create /source.txt
-    FILE *fp = fopen("/source.txt", "w");
-    fprintf(fp, "FIRST STAGE OK\n");
-    fclose(fp);
+    if (pid == 1) {
+        // try to create /mytmp
+        mkdir("/mytmp", 0755);
 
-    // try to mount tmpfs -> /mytmp!
-    mount("tmpfs", "/mytmp", "tmpfs", 0, "");
+        // try to create /source.txt
+        FILE *fp = fopen("/source.txt", "w");
+        fprintf(fp, "FIRST STAGE OK\n");
+        fclose(fp);
 
-    // try to copy source.txt to /mytmp/source.txt!
-    copy_file("/source.txt", "/mytmp/source.txt");
+        // try to mount tmpfs -> /mytmp
+        mount("tmpfs", "/mytmp", "tmpfs", 0, "");
+
+        // try to copy source.txt to /mytmp/source.txt
+        copy_file("/source.txt", "/mytmp/source.txt");
+    }
 
     // finally execute oringinal init!
     execve("/system/bin/init", argv, envp);
